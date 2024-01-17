@@ -29,7 +29,8 @@ def showSummary():
     try:
         club = [club for club in clubs if club['email'] == request.form['email']][0]
     except IndexError:
-        return render_template('index.html', error='Please enter a valid email')
+        # return render_template('index.html', error='Please enter a valid email')
+        return render_template('index.html', error="Email not found")
     return render_template('welcome.html',club=club,competitions=competitions)
 
 
