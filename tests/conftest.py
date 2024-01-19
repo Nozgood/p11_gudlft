@@ -1,10 +1,15 @@
 import pytest
-from flask import Flask
+from server import app, load_competitions, load_clubs
 
 
 @pytest.fixture
 def client():
-    app = Flask(__name__)
-    app.config.from_object({"TESTING": True})
+    app.config['TESTING'] = True
+    clubs = load_clubs()
+    competitions = load_competitions()
+
+    app.clubs = clubs
+    app.competitions = competitions
+
     with app.test_client() as client:
         yield client
