@@ -42,13 +42,11 @@ def login():
     if email == "":
         flash('Please fill an email')
         return redirect(url_for('index'))
-    print(f'email: {email}')
     logged_club = [club for club in clubs if club['email'] == email]
-    print(f'logged club: {logged_club}')
     if len(logged_club) == 0:
         flash('Unknown email')
         return redirect(url_for('index'))
-    return show_summary(logged_club)
+    return show_summary(logged_club[0])
 
 
 @app.route('/showSummary')

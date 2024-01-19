@@ -1,17 +1,28 @@
 from tests.conftest import client
-
-
-def _login_user(client, email):
-    rv = client.post('/showSummary', data=dict(email=email), follow_redirects=True)
-    assert rv.status_code == 200
-
-
-def test_login_user_bad_input(client):
-    print(f'client: {client}')
-    rv = client.post('/showSummary', data=dict(email='john@simplylift.co'), follow_redirects=True)
-    print(rv)
+from flask import get_flashed_messages
 
 
 def test_should_return_index(client):
     response = client.get('/')
     assert response.status_code == 200
+
+
+def test_login_no_input(client):
+    client.post('/login', data={'email': ''}, follow_redirects=True)
+    with client.session_transaction() as session:
+        messages = get_flashed_messages(with_categories=False)
+    assert messages[0] == 'Please fill an email'
+
+
+def test_login_bad_input(client):
+    client.post('/login', data={'email': 'test@gmail.com'}, follow_redirects=True)
+    with client.session_transaction() as session:
+        messages = get_flashed_messages(with_categories=False)
+    assert messages[0] == 'Unknown email'
+
+
+def test_login_normal_behavior(client):
+    client.post('/login', data={'email': 'john@simplylift.co'}, follow_redirects=True)
+    with client.session_transaction() as session:
+        messages = get_flashed_messages(with_categories=False)
+    assert len(messages) == 0
