@@ -36,6 +36,12 @@ def index():
     return render_template('index.html')
 
 
+
+@app.route('/showSummary')
+def show_summary(logged_club):
+    return render_template('welcome.html', club=logged_club, competitions=competitions)
+
+
 @app.route('/login', methods=['POST'])
 def login():
     email = request.form['email']
@@ -49,17 +55,12 @@ def login():
     return show_summary(logged_club[0])
 
 
-@app.route('/showSummary')
-def show_summary(logged_club):
-    return render_template('welcome.html', club=logged_club, competitions=competitions)
-
-
 @app.route('/book/<competition>/<club>')
 def book(competition,club):
     found_club = [c for c in clubs if c['name'] == club][0]
     found_competition = [c for c in competitions if c['name'] == competition][0]
     if found_club and found_competition:
-        return render_template('booking.html',club=found_club,competition=found_competition)
+        return render_template('booking.html', club=found_club,competition=found_competition)
     else:
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions)
