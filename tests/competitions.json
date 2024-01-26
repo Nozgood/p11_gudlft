@@ -1,8 +1,13 @@
 {
     "competitions": [
         {
-            "name": "test festival",
-            "date": "2024-02-01 10:00:00",
+            "name": "past festival",
+            "date": "2024-01-20 10:00:00",
+            "numberOfPlaces": "100"
+        },
+        {
+            "name": "good behavior",
+            "date": "2028-01-20 10:00:00",
             "numberOfPlaces": "100"
         }
     ]

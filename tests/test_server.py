@@ -21,7 +21,11 @@ def test_show_summary_valid_email(client):
 def test_purchases_places_not_enough_points(client):
     response = client.post(
         '/purchasePlaces',
-        data={'club': 'first test', 'competition': 'test festival', 'places': '10'},
+        data={
+            'club': 'first test',
+            'competition': 'good behavior',
+            'places': '10'
+        },
         follow_redirects=True
     )
 
@@ -33,7 +37,7 @@ def test_purchase_places_more_than_twelve_points(client):
         '/purchasePlaces',
         data={
             'club': 'second test 12 points',
-            'competition': 'test festival',
+            'competition': 'good behavior',
             'places': '13'
         },
         follow_redirects=True
@@ -42,13 +46,27 @@ def test_purchase_places_more_than_twelve_points(client):
     assert 'you cannot book more than 12 places for your club' in response.get_data(as_text=True)
 
 
-def test_purchases_places_enough_points(client):
+def test_purchase_places_past_competition(client):
     response = client.post(
         '/purchasePlaces',
         data={
             'club': 'first test',
-            'competition': 'test festival',
+            'competition': 'past festival',
             'places': '1'
+        },
+        follow_redirects=True
+    )
+
+    assert "you try to book places for a past competition" in response.get_data(as_text=True)
+
+
+def test_purchases_places_enough_points_future_competition(client):
+    response = client.post(
+        '/purchasePlaces',
+        data={
+            'club': 'second test 12 points',
+            'competition': 'good behavior',
+            'places': '12'
         },
         follow_redirects=True
     )
@@ -56,4 +74,5 @@ def test_purchases_places_enough_points(client):
     assert 'your club does not have enough points' not in response.get_data(as_text=True)
     assert 'Great-booking complete!' in response.get_data(as_text=True)
     assert 'you cannot book more than 12 places for your club' not in response.get_data(as_text=True)
+    assert "you try to book places for a past competition" not in response.get_data(as_text=True)
 
