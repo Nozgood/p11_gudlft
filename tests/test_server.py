@@ -40,3 +40,4 @@ def test_purchases_places_enough_points(client):
     )
 
     assert 'your club does not have enough points' not in response.get_data(as_text=True)
+    assert 'Great-booking complete!' in response.get_data(as_text=True)
