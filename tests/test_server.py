@@ -28,6 +28,20 @@ def test_purchases_places_not_enough_points(client):
     assert 'your club does not have enough points' in response.get_data(as_text=True)
 
 
+def test_purchase_places_more_than_twelve_points(client):
+    response = client.post(
+        '/purchasePlaces',
+        data={
+            'club': 'second test 12 points',
+            'competition': 'test festival',
+            'places': '13'
+        },
+        follow_redirects=True
+    )
+
+    assert 'you cannot book more than 12 places for your club' in response.get_data(as_text=True)
+
+
 def test_purchases_places_enough_points(client):
     response = client.post(
         '/purchasePlaces',
@@ -41,3 +55,5 @@ def test_purchases_places_enough_points(client):
 
     assert 'your club does not have enough points' not in response.get_data(as_text=True)
     assert 'Great-booking complete!' in response.get_data(as_text=True)
+    assert 'you cannot book more than 12 places for your club' not in response.get_data(as_text=True)
+

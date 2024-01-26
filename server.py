@@ -4,6 +4,7 @@ import os
 
 CLUBS_JSON = 'clubs.json'
 COMPETITIONS_JSON = 'competitions.json'
+MAX_POINTS_ALLOWED = 12
 
 
 def load_clubs():
@@ -59,6 +60,9 @@ def purchase_places():
     required_places = int(request.form['places'])
     if int(club_points) < required_places:
         flash("your club does not have enough points")
+        return render_template('booking.html', club=club, competition=competition)
+    if int(required_places) > MAX_POINTS_ALLOWED:
+        flash('you cannot book more than 12 places for your club')
         return render_template('booking.html', club=club, competition=competition)
     competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-required_places
     flash('Great-booking complete!')
