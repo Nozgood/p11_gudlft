@@ -56,10 +56,7 @@ def book(competition, club):
 @app.route('/purchasePlaces', methods=['POST'])
 def purchase_places():
     competition = [competition for competition in competitions if competition['name'] == request.form['competition']][0]
-
     club = [club for club in clubs if club['name'] == request.form['club']][0]
-
-    print(datetime.today() > datetime.strptime(competition["date"], '%Y-%m-%d %H:%M:%S'))
 
     if datetime.today() > datetime.strptime(competition["date"], '%Y-%m-%d %H:%M:%S'):
         flash("you try to book places for a past competition")
