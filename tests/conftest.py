@@ -3,6 +3,7 @@ from server import app, load_competitions, load_clubs
 
 
 def load_mock_clubs():
+    # lire le contenu du fichier
     return load_clubs()
 
 

@@ -60,7 +60,21 @@ def test_purchase_places_past_competition(client):
     assert "you try to book places for a past competition" in response.get_data(as_text=True)
 
 
-def test_purchases_places_enough_points_future_competition(client):
+def test_purchase_negative_amount_of_places(client):
+    response = client.post(
+        '/purchasePlaces',
+        data={
+            'club': 'first test',
+            'competition': 'good behavior',
+            'places': '-1'
+        },
+        follow_redirects=True
+    )
+
+    assert "you try to book a negative amount of places" in response.get_data(as_text=True)
+
+
+def test_purchases_places_normal_behavior(client):
     response = client.post(
         '/purchasePlaces',
         data={
