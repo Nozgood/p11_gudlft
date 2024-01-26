@@ -45,15 +45,14 @@ def book(competition, club):
     found_club = [c for c in clubs if c['name'] == club][0]
     found_competition = [c for c in competitions if c['name'] == competition][0]
     if found_club and found_competition:
-        return render_template('booking.html',club=found_club,competition=found_competition)
+        return render_template('booking.html', club=found_club, competition=found_competition)
     else:
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions)
 
 
-@app.route('/purchasePlaces',methods=['POST'])
+@app.route('/purchasePlaces', methods=['POST'])
 def purchase_places():
-    print(f'{request.form["competition"]}')
     competition = [competition for competition in competitions if competition['name'] == request.form['competition']][0]
     club = [club for club in clubs if club['name'] == request.form['club']][0]
     club_points = club['points']
