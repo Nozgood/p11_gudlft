@@ -103,4 +103,5 @@ def test_purchases_places_normal_behavior(client):
     assert 'Great-booking complete!' in response.get_data(as_text=True)
     assert 'you cannot book more than 12 places for your club' not in response.get_data(as_text=True)
     assert "you try to book places for a past competition" not in response.get_data(as_text=True)
-
+    assert ('this competition does not have enough places, please reduce your amount' not in
+            response.get_data(as_text=True))
