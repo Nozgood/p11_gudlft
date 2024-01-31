@@ -69,6 +69,10 @@ def purchase_places():
         flash("you try to book a negative amount of places")
         return render_template('booking.html', club=club, competition=competition)
 
+    if int(competition['numberOfPlaces']) < required_places:
+        flash('this competition does not have enough places, please reduce your amount')
+        return render_template('booking.html', club=club, competition=competition)
+
     if int(club_points) < required_places:
         flash("your club does not have enough points")
         return render_template('booking.html', club=club, competition=competition)
