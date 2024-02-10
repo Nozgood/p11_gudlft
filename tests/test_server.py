@@ -1,27 +1,27 @@
 from tests.conftest import client
 
 
-def test_should_return_index(client):
+def test_should_return_index(client, clubs_fixture, competitions_fixture):
     response = client.get('/')
     assert response.status_code == 200
-    assert "test_one@test.com" in response.get_data(as_text=True)
+    assert "first test" in response.get_data(as_text=True)
 
 
-def test_show_summary_unknown_email(client):
+def test_show_summary_unknown_email(client, clubs_fixture, competitions_fixture):
     response = client.post('/showSummary', data={'email': 'unknown@gmail.com'}, follow_redirects=True)
     assert 'Unknown email address' in response.get_data(as_text=True)
     assert response.status_code == 200
-    assert "test_one@test.com" in response.get_data(as_text=True)
+    assert "first test" in response.get_data(as_text=True)
 
 
-def test_show_summary_valid_email(client):
+def test_show_summary_valid_email(client, clubs_fixture, competitions_fixture):
     response = client.post('showSummary', data={"email": "test_one@test.com"})
     assert 'Unknown email address' not in response.get_data(as_text=True)
     assert 'Welcome, test_one@test.com' in response.get_data(as_text=True)
     assert 'Clubs:' in response.get_data(as_text=True)
 
 
-def test_purchase_places_competition_not_enough_points(client):
+def test_purchase_places_competition_not_enough_points(client, clubs_fixture, competitions_fixture):
     response = client.post(
         '/purchasePlaces',
         data={
@@ -35,7 +35,7 @@ def test_purchase_places_competition_not_enough_points(client):
     assert 'this competition does not have enough places, please reduce your amount' in response.get_data(as_text=True)
 
 
-def test_purchases_places_club__not_enough_points(client):
+def test_purchases_places_club__not_enough_points(client, clubs_fixture, competitions_fixture):
     response = client.post(
         '/purchasePlaces',
         data={
@@ -49,7 +49,7 @@ def test_purchases_places_club__not_enough_points(client):
     assert 'your club does not have enough points' in response.get_data(as_text=True)
 
 
-def test_purchase_places_more_than_twelve_points(client):
+def test_purchase_places_more_than_twelve_points(client, clubs_fixture, competitions_fixture):
     response = client.post(
         '/purchasePlaces',
         data={
@@ -63,7 +63,7 @@ def test_purchase_places_more_than_twelve_points(client):
     assert 'you cannot book more than 12 places for your club' in response.get_data(as_text=True)
 
 
-def test_purchase_places_past_competition(client):
+def test_purchase_places_past_competition(client, clubs_fixture, competitions_fixture):
     response = client.post(
         '/purchasePlaces',
         data={
@@ -77,7 +77,7 @@ def test_purchase_places_past_competition(client):
     assert "you try to book places for a past competition" in response.get_data(as_text=True)
 
 
-def test_purchase_negative_amount_of_places(client):
+def test_purchase_negative_amount_of_places(client, clubs_fixture, competitions_fixture):
     response = client.post(
         '/purchasePlaces',
         data={
@@ -91,7 +91,7 @@ def test_purchase_negative_amount_of_places(client):
     assert "you try to book a negative amount of places" in response.get_data(as_text=True)
 
 
-def test_purchases_places_normal_behavior(client):
+def test_purchases_places_normal_behavior(client, clubs_fixture, competitions_fixture):
     response = client.post(
         '/purchasePlaces',
         data={
