@@ -10,23 +10,6 @@ def client():
 
 
 @pytest.fixture(autouse=True)
-def clubs_fixture(monkeypatch):
-    mock_clubs = [
-        {
-            "name":"first test",
-            "email":"test_one@test.com",
-            "points":"1"
-        },
-        {
-            "name":"second test 12 points",
-            "email": "test_two@test.com",
-            "points":"30"
-        }
-    ]
-    monkeypatch.setattr(server, 'clubs', mock_clubs)
-
-
-@pytest.fixture(autouse=True)
 def competitions_fixture(monkeypatch):
     mock_competitions = [
         {
@@ -46,3 +29,20 @@ def competitions_fixture(monkeypatch):
         }
     ]
     monkeypatch.setattr(server, 'competitions', mock_competitions)
+
+
+@pytest.fixture(autouse=True)
+def clubs_fixture(monkeypatch):
+    mock_clubs = [
+        {
+            "name": "first test",
+            "email": "test_one@test.com",
+            "points": "1"
+        },
+        {
+            "name": "second test 12 points",
+            "email": "test_two@test.com",
+            "points": "30"
+        }
+    ]
+    monkeypatch.setattr(server, 'clubs', mock_clubs)
