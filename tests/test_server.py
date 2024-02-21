@@ -22,7 +22,7 @@ def test_login_bad_input(client):
 
 
 def test_login_normal_behavior(client):
-    client.post('/login', data={'email': 'john@simplylift.co'}, follow_redirects=True)
+    client.post('/login', data={'email': 'test_one@test.com'}, follow_redirects=True)
     with client.session_transaction() as session:
         messages = get_flashed_messages(with_categories=False)
     assert len(messages) == 0
