@@ -1,20 +1,38 @@
 import pytest
-from server import app, load_competitions, load_clubs
-
-
-def load_mock_clubs():
-    return load_clubs()
-
-
-def load_mock_competitions():
-    return load_competitions()
+import server
 
 
 @pytest.fixture
 def client():
-    app.config['TESTING'] = True
-    app.clubs = load_mock_clubs()
-    app.competitions = load_mock_competitions()
-
-    with app.test_client() as client:
+    server.app.config['TESTING'] = True
+    with server.app.test_client() as client:
         yield client
+
+
+@pytest.fixture(autouse=True)
+def competitions_fixture(monkeypatch):
+    mock_competitions = [
+        {
+            "name": "test festival",
+            "date": "2024-02-01 10:00:00",
+            "numberOfPlaces": "100"
+        }
+    ]
+    monkeypatch.setattr(server, 'competitions', mock_competitions)
+
+
+@pytest.fixture(autouse=True)
+def clubs_fixture(monkeypatch):
+    mock_clubs = [
+        {
+            "name":"first test",
+            "email":"test_one@test.com",
+            "points":"1"
+        },
+        {
+            "name":"second test",
+            "email": "test_two@test.com",
+            "points":"10"
+        }
+    ]
+    monkeypatch.setattr(server, 'clubs', mock_clubs)
