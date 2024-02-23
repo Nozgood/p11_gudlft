@@ -9,7 +9,7 @@ def client():
         yield client
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def competitions_fixture(monkeypatch):
     mock_competitions = [
         {
@@ -31,7 +31,7 @@ def competitions_fixture(monkeypatch):
     monkeypatch.setattr(server, 'competitions', mock_competitions)
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def clubs_fixture(monkeypatch):
     mock_clubs = [
         {
